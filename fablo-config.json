@@ -60,18 +60,17 @@
   ],
   "chaincodes": [
     {
-      "name": "kv",
+      "name": "assignment-name-placeholder",
       "version": "0.1.0",
       "channel": "my-channel1",
       "lang": "ccaas",
       "image": "hyperledger/fabric-nodeenv:${FABRIC_NODEENV_VERSION:-2.5}",
-      "chaincodeMountPath": "$CHAINCODES_BASE_DIR/chaincodes/kv-node",
+      "chaincodeMountPath": "chaincode",
       "chaincodeStartCommand": "npm run start:watch:ccaas",
       "privateData": []
     }
   ],
   "hooks": {
-    "postGenerate": "npm i --prefix ./chaincodes/kv-node"
+    "postGenerate": "npm i --prefix ./chaincode"
   }
 }
-

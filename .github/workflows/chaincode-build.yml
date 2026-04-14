@@ -1,27 +1,33 @@
-name: kv-node build
+---
+name: Chaincode Build
+
 
 on:
   push:
+    paths: [chaincode/**]
   pull_request:
+    paths: [chaincode/**]
+
+
+permissions:
+  contents: read
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: chaincodes/kv-node
+        working-directory: chaincode/
     steps:
       - uses: actions/checkout@v4
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: chaincodes/kv-node/.nvmrc
+          node-version-file: chaincode/.nvmrc
           cache: npm
-          cache-dependency-path: chaincodes/kv-node/package-lock.json
-
+          cache-dependency-path: chaincode/package-lock.json
       - name: Install dependencies
         run: npm ci
-
       - name: Build
         run: npm run build
