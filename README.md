@@ -2,6 +2,10 @@
 
 [![Chaincode Build](https://github.com/ftsrg-bta/assignment-template-hlf-nodejs/actions/workflows/chaincode-build.yml/badge.svg)](https://github.com/ftsrg-bta/assignment-template-hlf-nodejs/actions/workflows/chaincode-build.yml)
 
+> [!IMPORTANT]
+> The canonical description of the assignment and its acceptance criteria are maintained at the **[ftsrg-bta assignments wiki](https://github.com/ftsrg-bta/assignments/wiki)**.
+> Be sure to consult it before finalizing your submission.
+
 > [!NOTE]
 > The implementation language for this assignment is **Node (JavaScript or TypeScript)**
 
