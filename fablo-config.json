@@ -1,64 +1,77 @@
 {
-  "$schema": "https://github.com/hyperledger-labs/fablo/releases/download/2.2.0/schema.json",
+  "$schema": "https://github.com/hyperledger-labs/fablo/releases/download/2.6.0/schema.json",
   "global": {
-    "fabricVersion": "2.5.9",
-    "tls": false,
-    "engine": "docker",
+    "fabricVersion": "3.1.0",
+    "tls": true,
     "peerDevMode": false,
-    "tools": {
-      "explorer": true
-    }
+    "engine": "docker"
   },
   "orgs": [
     {
       "organization": {
         "name": "Orderer",
-        "domain": "orderer.example.com"
+        "domain": "orderer.example.com",
+        "mspName": "OrdererMSP"
+      },
+      "ca": {
+        "prefix": "ca",
+        "db": "sqlite"
       },
       "orderers": [
         {
           "groupName": "group1",
-          "type": "solo",
-          "instances": 1
+          "type": "BFT",
+          "instances": 2,
+          "prefix": "orderer"
         }
-      ],
-      "tools": {
-        "fabloRest": true
-      }
+      ]
     },
     {
       "organization": {
         "name": "Org1",
-        "domain": "org1.example.com"
+        "domain": "org1.example.com",
+        "mspName": "Org1MSP"
       },
+      "ca": {
+        "prefix": "ca",
+        "db": "sqlite"
+      },
+      "orderers": [],
       "peer": {
-        "instances": 1,
-        "db": "LevelDb"
-      },
-      "tools": {
-        "fabloRest": true
+        "instances": 2,
+        "db": "LevelDb",
+        "prefix": "peer"
       }
     }
   ],
   "channels": [
     {
-      "name": "channel1",
+      "name": "my-channel1",
       "orgs": [
         {
           "name": "Org1",
-          "peers": ["peer0"]
+          "peers": [
+            "peer0",
+            "peer1"
+          ]
         }
-      ],
-      "ordererGroup": "group1"
+      ]
     }
   ],
   "chaincodes": [
     {
-      "name": "kv-node",
+      "name": "kv",
       "version": "0.1.0",
-      "lang": "node",
-      "channel": "channel1",
-      "directory": "./chaincodes/kv-node"
+      "channel": "my-channel1",
+      "lang": "ccaas",
+      "image": "hyperledger/fabric-nodeenv:${FABRIC_NODEENV_VERSION:-2.5}",
+      "chaincodeMountPath": "$CHAINCODES_BASE_DIR/chaincodes/kv-node",
+      "chaincodeStartCommand": "npm run start:watch:ccaas",
+      "privateData": []
     }
-  ]
+  ],
+  "hooks": {
+    "postGenerate": "npm i --prefix ./chaincodes/kv-node"
+  }
 }
+
